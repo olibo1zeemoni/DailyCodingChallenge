@@ -153,45 +153,89 @@ extension Matrix {
 }
 
 @propertyWrapper
-struct SomeWrapper {
+struct Capitalized {
+    private var value: String = ""
     
-    var wrappedValue: Int
-    var someValue: Double
-    init() {
-        self.wrappedValue = 100
-        self.someValue = 12.3
+    var wrappedValue: String {
+        get { value }
+        set { value = newValue.capitalized }
     }
-    init(wrappedValue: Int) {
+    
+    init(wrappedValue: String) {
         self.wrappedValue = wrappedValue
-        self.someValue = 45.6
-    }
-    init(wrappedValue value: Int, custom: Double) {
-        self.wrappedValue = value
-        self.someValue = custom
     }
 }
 
+struct User {
+    @Capitalized var name: String
+}
 
-struct SomeStruct {
-    // Uses init()
-    @SomeWrapper var a: Int
+var user = User(name: "john doe")
+print(user.name)
+
+let someArray = [10, 17, 80, 100, 124]
+
+func customSearch(array: [Int], searchItem: Int) -> Int? {
+    for item in array {
+        if item == searchItem {
+            return item
+        } else if item > searchItem {
+            break
+        }
+        
+    }
+    return nil
+}
+
+customSearch(array: someArray, searchItem: 81)
 
 
-    // Uses init(wrappedValue:)
-    @SomeWrapper var b = 10 {
-        didSet {
-            print("b accessed")
+func binarySearch(array: [Int], searchTerm: Int) -> Int? {
+    guard !array.isEmpty else {
+        return nil
+    }
+    var lowerBound = 0
+    var upperBound = array.count - 1
+    
+    while lowerBound <= upperBound {
+        
+        var midPoint = (lowerBound + upperBound) / 2
+//        print("midPoint = \(midPoint)")
+        
+        if searchTerm == array[midPoint] {
+            return array[midPoint]
+        } else if searchTerm > array[midPoint] {
+            lowerBound = midPoint + 1
+        } else if searchTerm < array[midPoint] {
+            upperBound = midPoint - 1
         }
     }
+    print("not found")
+    return nil
+}
 
+let orderedArray = [1,4,7,8,10,15,17]
+var item = binarySearch(array: orderedArray, searchTerm: 7)
+//print("\(String(describing: item))")
 
-    // Both use init(wrappedValue:custom:)
-    @SomeWrapper(custom: 98.7) var c = 30
-    @SomeWrapper(wrappedValue: 30, custom: 98.7) var d
-
+func bubbleSort(array: [Int]) -> [Int] {
+    var array = array
+    var sorted = false
+    var unsortedUntilIndex = array.count - 1
+    
+    while !sorted {
+        sorted = true
+        for i in 0..<unsortedUntilIndex {
+            if array[i] > array[i+1] {
+                sorted = false
+                array.swapAt(i+1, i)
+                unsortedUntilIndex - 1
+            }
+        }
+    }
+    return array
 }
 
 
-var someStructInstance = SomeStruct()
-someStructInstance.a = 20
-someStructInstance.b = 111
+var anotherArray = [2,5,34, 23,12,16,93,45]
+bubbleSort(array: anotherArray)
