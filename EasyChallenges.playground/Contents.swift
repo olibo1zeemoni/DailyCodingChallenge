@@ -136,7 +136,9 @@ let mars = Planet[3]
 
 extension Matrix {
     static func + (lhs: Matrix, rhs: Matrix) -> Matrix {
-        precondition(lhs.rows == rhs.rows && lhs.columns == rhs.columns, "Matrices must have the same dimensions")
+        precondition(
+            lhs.rows == rhs.rows && lhs.columns == rhs.columns,
+            "Matrices must have the same dimensions")
         var result = Matrix(rows: lhs.rows, columns: lhs.columns)
         for i in 0..<lhs.rows {
             for j in 0..<lhs.columns {
@@ -155,12 +157,12 @@ extension Matrix {
 @propertyWrapper
 struct Capitalized {
     private var value: String = ""
-    
+
     var wrappedValue: String {
         get { value }
         set { value = newValue.capitalized }
     }
-    
+
     init(wrappedValue: String) {
         self.wrappedValue = wrappedValue
     }
@@ -182,13 +184,12 @@ func customSearch(array: [Int], searchItem: Int) -> Int? {
         } else if item > searchItem {
             break
         }
-        
+
     }
     return nil
 }
 
 customSearch(array: someArray, searchItem: 81)
-
 
 func binarySearch(array: [Int], searchTerm: Int) -> Int? {
     guard !array.isEmpty else {
@@ -196,12 +197,12 @@ func binarySearch(array: [Int], searchTerm: Int) -> Int? {
     }
     var lowerBound = 0
     var upperBound = array.count - 1
-    
+
     while lowerBound <= upperBound {
-        
+
         var midPoint = (lowerBound + upperBound) / 2
-//        print("midPoint = \(midPoint)")
-        
+        //        print("midPoint = \(midPoint)")
+
         if searchTerm == array[midPoint] {
             return array[midPoint]
         } else if searchTerm > array[midPoint] {
@@ -214,7 +215,7 @@ func binarySearch(array: [Int], searchTerm: Int) -> Int? {
     return nil
 }
 
-let orderedArray = [1,4,7,8,10,15,17]
+let orderedArray = [1, 4, 7, 8, 10, 15, 17]
 var item = binarySearch(array: orderedArray, searchTerm: 7)
 //print("\(String(describing: item))")
 
@@ -222,13 +223,13 @@ func bubbleSort(array: [Int]) -> [Int] {
     var array = array
     var sorted = false
     var unsortedUntilIndex = array.count - 1
-    
+
     while !sorted {
         sorted = true
         for i in 0..<unsortedUntilIndex {
-            if array[i] > array[i+1] {
+            if array[i] > array[i + 1] {
                 sorted = false
-                array.swapAt(i+1, i)
+                array.swapAt(i + 1, i)
                 unsortedUntilIndex - 1
             }
         }
@@ -236,6 +237,41 @@ func bubbleSort(array: [Int]) -> [Int] {
     return array
 }
 
-
-var anotherArray = [2,5,34, 23,12,16,93,45]
+var anotherArray = [2, 5, 34, 23, 12, 16, 93, 45]
 bubbleSort(array: anotherArray)
+
+func hasDuplicate(array: [Int]) -> Bool {
+    var steps = 0
+    var existingArray = [Int: Bool]()
+    for i in 0..<array.count {
+        steps += 1
+        let number = array[i]
+        if existingArray[number] == nil {
+            existingArray[number] = true
+        } else {
+            return true
+        }
+    }
+    return false
+}
+
+hasDuplicate(array: anotherArray)
+
+func selectionSort(array: [Int]) -> [Int] {
+    var array = array
+    for i in 0..<array.count {
+        var lowestNumberIndex = i
+        for j in i + 1..<array.count {
+            if array[j] < array[lowestNumberIndex] {
+                lowestNumberIndex = j //comparison
+            }
+        }
+        if lowestNumberIndex != i {
+            array.swapAt(i, lowestNumberIndex)
+        }
+    }
+
+    return array
+}
+
+selectionSort(array: anotherArray)
