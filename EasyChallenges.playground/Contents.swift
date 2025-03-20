@@ -275,3 +275,52 @@ func selectionSort(array: [Int]) -> [Int] {
 }
 
 selectionSort(array: anotherArray)
+
+func evenIndexArray(array: Array<AnyHashable>) -> [AnyHashable] {
+//    var newArray  = [AnyHashable]()
+//    for i in 0..<array.count {
+//         i % 2 == 0 ?
+//        newArray.append(array[i]):
+//        ()
+//        
+//    }
+//    return newArray
+    array.enumerated().filter{ $0.offset % 2 == 0 }.map{ $0.element }
+}
+
+evenIndexArray(array: anotherArray)
+
+func insertSort(array: inout [Int]) -> [Int] {
+    for index in 1..<array.count {
+        var position = index
+        var tempValue = array[index]
+        
+        while position > 0 && array[position - 1] > tempValue {
+            array[position] = array[position - 1]
+            position -= 1
+            array[position] = tempValue
+//            array.swapAt(position, position - 1)
+//            position -= 1
+        }
+    }
+    return array
+}
+var newArray = [2, 5, 34, 23, 12, 16, 93, 45]
+insertSort(array: &newArray)
+
+func interSection(a: [Int], b:[Int]) -> [Int] {
+//    var array = [Int]()
+//    for i in a {
+//        for j in b {
+//            if i == j {
+//                array.append(i)
+//            }
+//        }
+//    }
+//    return array
+    a.filter{ element in b.contains(element)}
+}
+
+var a = [1,2,5,6,7]
+var b = [5,6,9,10]
+interSection(a: a, b: b)
