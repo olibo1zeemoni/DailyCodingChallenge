@@ -263,7 +263,7 @@ func selectionSort(array: [Int]) -> [Int] {
         var lowestNumberIndex = i
         for j in i + 1..<array.count {
             if array[j] < array[lowestNumberIndex] {
-                lowestNumberIndex = j //comparison
+                lowestNumberIndex = j  //comparison
             }
         }
         if lowestNumberIndex != i {
@@ -276,16 +276,16 @@ func selectionSort(array: [Int]) -> [Int] {
 
 selectionSort(array: anotherArray)
 
-func evenIndexArray(array: Array<AnyHashable>) -> [AnyHashable] {
-//    var newArray  = [AnyHashable]()
-//    for i in 0..<array.count {
-//         i % 2 == 0 ?
-//        newArray.append(array[i]):
-//        ()
-//        
-//    }
-//    return newArray
-    array.enumerated().filter{ $0.offset % 2 == 0 }.map{ $0.element }
+func evenIndexArray(array: [AnyHashable]) -> [AnyHashable] {
+    //    var newArray  = [AnyHashable]()
+    //    for i in 0..<array.count {
+    //         i % 2 == 0 ?
+    //        newArray.append(array[i]):
+    //        ()
+    //
+    //    }
+    //    return newArray
+    array.enumerated().filter { $0.offset % 2 == 0 }.map { $0.element }
 }
 
 evenIndexArray(array: anotherArray)
@@ -294,13 +294,13 @@ func insertSort(array: inout [Int]) -> [Int] {
     for index in 1..<array.count {
         var position = index
         var tempValue = array[index]
-        
+
         while position > 0 && array[position - 1] > tempValue {
             array[position] = array[position - 1]
             position -= 1
             array[position] = tempValue
-//            array.swapAt(position, position - 1)
-//            position -= 1
+            //            array.swapAt(position, position - 1)
+            //            position -= 1
         }
     }
     return array
@@ -308,19 +308,54 @@ func insertSort(array: inout [Int]) -> [Int] {
 var newArray = [2, 5, 34, 23, 12, 16, 93, 45]
 insertSort(array: &newArray)
 
-func interSection(a: [Int], b:[Int]) -> [Int] {
-//    var array = [Int]()
-//    for i in a {
-//        for j in b {
-//            if i == j {
-//                array.append(i)
-//            }
-//        }
-//    }
-//    return array
-    a.filter{ element in b.contains(element)}
+func interSection(a: [Int], b: [Int]) -> [Int] {
+    //    var array = [Int]()
+    //    for i in a {
+    //        for j in b {
+    //            if i == j {
+    //                array.append(i)
+    //            }
+    //        }
+    //    }
+    //    return array
+    a.filter { element in b.contains(element) }
 }
 
-var a = [1,2,5,6,7]
-var b = [5,6,9,10]
+var a = [1, 2, 5, 6, 7]
+var b = [5, 6, 9, 10]
 interSection(a: a, b: b)
+b = b.dropLast()  //popLast is a mutating function
+
+
+
+func hasLinterError(_ string: String) -> Bool {
+    var stack: [Character] = []
+    let braces: [Character: Character] = ["(": ")", "{": "}", "[": "]"]
+
+    for char in string {
+        if let match = braces[char] {
+            // Opening brace
+            stack.append(char)
+        } else if braces.values.contains(char) {
+            // Closing brace
+            guard let lastOpening = stack.last else {
+                return true  // Closing brace with no matching opening
+            }
+
+            guard braces[lastOpening] == char else{
+                return true  // Mismatched closing brace
+            }
+
+            stack.removeLast()
+        }
+    }
+    return !stack.isEmpty  // Check for unclosed opening braces
+}
+
+let stringA = "((()))"
+let stringB = "([})"
+let stringC = "([{}])"
+hasLinterError(stringA)
+hasLinterError(stringB)
+hasLinterError(stringC)
+hasLinterError("(var x = {y: [1, 2, 3]})")
