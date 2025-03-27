@@ -363,122 +363,14 @@ hasLinterError("(var x = {y: [1, 2, 3]})")
 Let's define a "sevenish" number to be one which is either a power of 7, or the sum of unique powers of 7. The first few sevenish numbers are 1, 7, 8, 49, and so on. Create an algorithm to find the nth sevenish number.
 */
 
-func sevenish(_ n: Int) -> [Int]{
-    guard n >= 0 else { return [] } // Handle negative input
-    var exponents = [Int]()
-    for i in 0..<n {
-        exponents.append(Int(pow(7, Double(i))))
-    }
-    return exponents
-}
-
-sevenish(4)
-
-func factorial(number: Int) -> Int {
-    if number == 1 {
-        return 1
-    } else {
-        return number * factorial(number: number - 1)
-    }
-}
-
-factorial(number: 5)
-
-func countdown(n: Int){
-    print("\(n)")
-    if n <= 0 {
-        return
-    } else {
-        countdown(n: n - 1)
-    }
-}
-
-func countUp(n: Int) {
-    if n == 0 {
-        return
-    } else {
-        countUp(n: n - 1)
-    }
-    print("\(n)")
-}
-
-//countdown(n: 4)
-//countUp(n: 4)
-
-func firstNPowers7(n:Int) -> [Int] {
-    guard n > 0 else {return [] }
-    var currentExp = 1
+func sevenish(_ number: Int) -> [Int]{
     var array = [Int]()
-    for _ in 0..<n {
-        array.append(currentExp)
-        currentExp *= 7
+    for n in 0..<number/2 {
+        let num = pow(7, n)
+        array.append(Int(num))
     }
-    return array
+    return array.sorted()
 }
 
-firstNPowers7(n: 2)
+sevenish(7)
 
-func firstNPowersRecursive(n: Int) -> [Int] {
-    guard n > 0 else { return [] }
-    var previousExp = firstNPowersRecursive(n: n - 1)
-    var currentExp = Int(pow(7.0, Double(n-1)))
-    return previousExp + [currentExp]
-}
-firstNPowersRecursive(n: 4)
-
-func someFunc(array: [Int]) ->[Int]{
-    var result = [Int]()
-    for i in 0..<array.count - 1 {
-        var lhs = array[i]
-        var rhs = array[i + 1]
-        var sum = lhs + rhs
-        result.append(sum)
-    }
-    
-    return result
-}
-someFunc(array: [1,2,3])
-
-func nthSevenishNumber(n: Int) -> Int {
-    var result = 0
-    var powerOf7 = 1  // Tracks 7^i for each bit position
-    var m = n         // Copy of n to process bits
-    
-    while m > 0 {
-        if m % 2 == 1 {
-            result += powerOf7
-        }
-        m /= 2         // Move to the next bit
-        powerOf7 *= 7  // Update to next power of 7
-    }
-    
-    return result
-}
-
-// Example usage:
-print(nthSevenishNumber(n: 5))
-
-
-func sevenishNumbers(n: Int) -> [Int] {
-    guard n > 0 else { return [] }
-    
-    var result = [1]
-    if n == 1 {
-        return result
-    }
-    
-    var currentPower = 7
-    
-    while result.count < n {
-        var newBatch = [currentPower]
-        for num in result {
-            newBatch.append(num + currentPower)
-        }
-        result += newBatch
-        currentPower *= 7
-    }
-    
-    return Array(result[0..<n])
-}
-
-sevenishNumbers(n: 3)
