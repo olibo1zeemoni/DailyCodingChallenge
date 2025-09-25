@@ -1,4 +1,5 @@
 import Cocoa
+import SwiftUI
 
 func isNumber(_ s: String) -> Bool {
     let trimmed = s.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -34,6 +35,8 @@ func isNumber(_ s: String) -> Bool {
 // Test cases
 let testCases = ["10", "-10", "10.1", "-10.1", "1e5", "a", "x 1", "a -2", "-", "  3  ", ".5", "-.5", "1e-5", "+10", "+1.5"]
 
-for test in testCases {
-    print("\(test): \(isNumber(test))")
-}
+//for test in testCases {
+//    print("\(test): \(isNumber(test))")
+//}
+
+

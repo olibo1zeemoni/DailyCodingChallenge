@@ -35,3 +35,30 @@ print(singleNumber(nums1)) // Output: 1
 let nums2 = [13, 19, 13, 13]
 print(singleNumber(nums2)) // Output: 19
 
+
+var lowerCaseCallout: [(String,[String])] = [("a", ["à","á","â"])]
+
+func getRow(rowIndex: Int) -> [Int] {
+    guard rowIndex >= 0 else { return []}
+    var row = [Int]()
+    row.reserveCapacity(rowIndex + 1)
+    var current = 1
+    
+    row.append(current)
+    if rowIndex == 0 {
+        return row
+    }
+    
+    for k in 1...rowIndex {
+        current = current * (rowIndex + 1 - k)/k
+        row.append(current)
+    }
+    return row
+}
+
+
+getRow(rowIndex: 0)
+getRow(rowIndex: 1)
+getRow(rowIndex: 2)
+getRow(rowIndex: 3)
+

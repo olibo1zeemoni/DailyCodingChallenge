@@ -326,8 +326,6 @@ var b = [5, 6, 9, 10]
 interSection(a: a, b: b)
 b = b.dropLast()  //popLast is a mutating function
 
-
-
 func hasLinterError(_ string: String) -> Bool {
     var stack: [Character] = []
     let braces: [Character: Character] = ["(": ")", "{": "}", "[": "]"]
@@ -342,7 +340,7 @@ func hasLinterError(_ string: String) -> Bool {
                 return true  // Closing brace with no matching opening
             }
 
-            guard braces[lastOpening] == char else{
+            guard braces[lastOpening] == char else {
                 return true  // Mismatched closing brace
             }
 
@@ -363,16 +361,14 @@ hasLinterError("(var x = {y: [1, 2, 3]})")
 Let's define a "sevenish" number to be one which is either a power of 7, or the sum of unique powers of 7. The first few sevenish numbers are 1, 7, 8, 49, and so on. Create an algorithm to find the nth sevenish number.
 */
 
-func sevenish(_ n: Int) -> [Int]{
-    guard n >= 0 else { return [] } // Handle negative input
+func powersOf7(_ n: Int) -> [Int] {
+    guard n >= 0 else { return [] }  // Handle negative input
     var exponents = [Int]()
     for i in 0..<n {
         exponents.append(Int(pow(7, Double(i))))
     }
     return exponents
 }
-
-sevenish(4)
 
 func factorial(number: Int) -> Int {
     if number == 1 {
@@ -384,7 +380,7 @@ func factorial(number: Int) -> Int {
 
 factorial(number: 5)
 
-func countdown(n: Int){
+func countdown(n: Int) {
     print("\(n)")
     if n <= 0 {
         return
@@ -405,8 +401,8 @@ func countUp(n: Int) {
 //countdown(n: 4)
 //countUp(n: 4)
 
-func firstNPowers7(n:Int) -> [Int] {
-    guard n > 0 else {return [] }
+func firstNPowers7(n: Int) -> [Int] {
+    guard n > 0 else { return [] }
     var currentExp = 1
     var array = [Int]()
     for _ in 0..<n {
@@ -420,55 +416,56 @@ firstNPowers7(n: 2)
 
 func firstNPowersRecursive(n: Int) -> [Int] {
     guard n > 0 else { return [] }
-    var previousExp = firstNPowersRecursive(n: n - 1)
-    var currentExp = Int(pow(7.0, Double(n-1)))
+    let previousExp = firstNPowersRecursive(n: n - 1)
+    let currentExp = Int(pow(7.0, Double(n - 1)))
     return previousExp + [currentExp]
 }
 firstNPowersRecursive(n: 4)
 
-func someFunc(array: [Int]) ->[Int]{
+func someFunc(_ array: [Int]) -> [Int] {
+    guard array.count > 1 else { return array }
     var result = [Int]()
     for i in 0..<array.count - 1 {
-        var lhs = array[i]
-        var rhs = array[i + 1]
-        var sum = lhs + rhs
+        let lhs = array[i]
+        let rhs = array[i + 1]
+        let sum = lhs + rhs
         result.append(sum)
     }
-    
+
     return result
 }
-someFunc(array: [1,2,3])
+someFunc([1, 2, 3])
+someFunc([1, 2])
 
 func nthSevenishNumber(n: Int) -> Int {
     var result = 0
     var powerOf7 = 1  // Tracks 7^i for each bit position
-    var m = n         // Copy of n to process bits
-    
+    var m = n  // Copy of n to process bits
+
     while m > 0 {
         if m % 2 == 1 {
             result += powerOf7
         }
-        m /= 2         // Move to the next bit
+        m /= 2  // Move to the next bit
         powerOf7 *= 7  // Update to next power of 7
     }
-    
+
     return result
 }
 
-// Example usage:
-print(nthSevenishNumber(n: 5))
+func sevenish(_ n: Int) -> [Int] {
+    guard n != 0 else {
+        return []
+    }
 
-
-func sevenishNumbers(n: Int) -> [Int] {
-    guard n > 0 else { return [] }
-    
     var result = [1]
-    if n == 1 {
+
+    guard n != 1 else {
         return result
     }
-    
+
     var currentPower = 7
-    
+
     while result.count < n {
         var newBatch = [currentPower]
         for num in result {
@@ -477,8 +474,63 @@ func sevenishNumbers(n: Int) -> [Int] {
         result += newBatch
         currentPower *= 7
     }
-    
-    return Array(result[0..<n])
+    return Array(result.prefix(n))
+
 }
 
-sevenishNumbers(n: 3)
+sevenish(7)
+nthSevenishNumber(n: 7)
+
+class SortableArray {
+    var array: [Int]
+
+    init(array: [Int]) {
+        self.array = array
+    }
+
+    func quickSort(leftIndex: Int, rightIndex: Int)  {
+        var leftIndex = leftIndex
+        var rightIndex = rightIndex
+        
+        if rightIndex - leftIndex <= 1 {
+            return
+        }
+        
+        
+        var pivotPosition = partition(leftPointer: &leftIndex, rightPointer: &rightIndex)
+        
+        quickSort(leftIndex: leftIndex, rightIndex: pivotPosition - 1)
+        quickSort(leftIndex: pivotPosition + 1, rightIndex: rightIndex)
+    }
+    
+    
+    private func partition(leftPointer: inout Int, rightPointer: inout Int) -> Int {
+        var pivotPosition = rightPointer
+        var pivot = array[pivotPosition]
+
+        rightPointer -= 1
+
+        while true {
+            while array[leftPointer] < pivot {
+                leftPointer -= 1
+            }
+
+            while array[rightPointer] > pivot {
+                rightPointer -= 1
+            }
+
+            if leftPointer >= rightPointer {
+                break
+            } else {
+                array.swapAt(leftPointer, rightPointer)
+            }
+
+        }
+        array.swapAt(leftPointer, pivotPosition)
+        return leftPointer
+    }
+
+}
+
+
+print("done")
