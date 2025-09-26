@@ -86,16 +86,71 @@ func operate(a: Int, b: Int, using op:((Int, Int) -> Int)) -> Int {
 
 let result = operate(a: 1, b: 2, using: add)
 
-
-func makeIncrement (startingFrom value: Int) -> () -> Int {
+//MARK: - Closure capturing in action
+func makeIncrementer (startingFrom value: Int) -> () -> Int {
     var temp = value
-    func inc () -> Int {
+    let inc: () -> Int = {
         temp += 1
         return temp
     }
     return inc
 }
 
-let incrementFrom5 = makeIncrement(startingFrom: 5)
-print(incrementFrom5())
-print(incrementFrom5())
+let incrementFrom5 = makeIncrementer(startingFrom: 5)
+//print(incrementFrom5())
+//print(incrementFrom5())
+
+class Counter {
+    var count: Int = 0
+    
+    func increment(){
+        count += 1
+    }
+}
+
+struct CounterStruct {
+    var count: Int = 0
+    
+    mutating func increment(){
+        count += 1
+    }
+}
+
+let letters = ["a", "b", "c", "d"]
+
+var a = 2
+
+func mutate(x: inout Int) {
+    x = x * 2
+}
+
+mutate(x: &a)
+
+print(a)
+
+struct State {
+    struct InnerState {
+        mutating  func touch() {
+            print("InnerState.touch called")
+            // No actual mutation to `self` (no property changed)
+        }
+    }
+
+    var innerState: InnerState {
+        didSet {
+            print("didSet: innerState changed (or at least was set)")
+        }
+    }
+}
+
+var state = State(innerState: State.InnerState())
+state.innerState.touch()
+
+func adds(_ x: Int, _ y: Int) -> Int { x + y }
+
+let ops: [(Int,Int) -> Int] = [adds, {$0 * $1}, {$0 - $1}]
+ops[1](5, 3)
+
+let numbers = [20,19,7,12]
+
+numbers.map{$0 % 2 == 1 ? 0 : $0 * 3}
