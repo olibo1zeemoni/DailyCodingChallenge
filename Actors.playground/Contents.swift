@@ -34,13 +34,13 @@ func runUnsafeRace() async {
     print("\(scoreKeeper.score) uns")
 }
 
-Task {
-    await  runUnsafeRace()
-    await  runUnsafeRace()
-    await  runUnsafeRace()
-    await  runUnsafeRace()
-    await  runUnsafeRace()
-}
+//Task {
+//    await  runUnsafeRace()
+//    await  runUnsafeRace()
+//    await  runUnsafeRace()
+//    await  runUnsafeRace()
+//    await  runUnsafeRace()
+//}
 
 
 func runSafeRace() async {
@@ -56,10 +56,11 @@ func runSafeRace() async {
     print(await scoreKeeper.score)
 }
 
-Task {
-    await runSafeRace()
-    await runSafeRace()
-    await runSafeRace()
-    await runSafeRace()
-    await runSafeRace()
-}
+//Task {
+//    await runSafeRace()
+//    await runSafeRace()
+//    await runSafeRace()
+//    await runSafeRace()
+//    await runSafeRace()
+//}
+

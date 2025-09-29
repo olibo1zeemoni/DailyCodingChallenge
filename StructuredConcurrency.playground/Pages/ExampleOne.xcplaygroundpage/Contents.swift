@@ -1,7 +1,7 @@
 import Foundation
 import SwiftUI
 
-struct UserProfile: Identifiable, Decodable{
+struct UserProfile: Identifiable, Decodable, Sendable{
     var id: String
     var username: String
 }
@@ -108,4 +108,31 @@ func fetchUserDataWithTaskGroup(for userID: String) async throws {
 Task {
     try await fetchUserDataWithTaskGroup(for: "user123")
 }
-print("hello world")
+//print("hello world")
+
+//MARK: fine-grained read-write lock.
+
+final class UserProfileCache: @unchecked Sendable {
+    private let queue = DispatchQueue(label: "com.example.UserProfileCache.queue", attributes: .concurrent)
+    
+     private var cache: [String: UserProfile] = [:]
+    
+    func setProfile(_ profile: UserProfile, userID: String) {
+        queue.async(flags: .barrier) {
+            self.cache[userID] = profile
+            print("CACHE WRITE: Set profile for \(userID)")
+        }
+    }
+    
+    func getProfile(userID: String) -> UserProfile? {
+        var userProfile: UserProfile?
+        ///`sync` because we need to block until we get the value back in order to return it.
+        queue.sync {
+            userProfile = cache[userID]
+        }
+        print("CACHE READ: Got profile for \(userID)")
+        return userProfile
+    }
+    
+}
+
