@@ -26,7 +26,7 @@ func runUnsafeRace() async {
     await withTaskGroup(of: Void.self) { group in
         for _ in 0..<1000 {
             group.addTask {
-                scoreKeeper.increment()
+//                scoreKeeper.increment() //Data race condition
             }
         }
     }

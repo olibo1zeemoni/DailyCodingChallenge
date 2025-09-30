@@ -279,7 +279,7 @@ let success = ServerResponse.result("6:03 AM", "6:11 PM")
 let failure = ServerResponse.failure("Couldn't fetch results")
 let unknown = ServerResponse.unknown("Unknown result")
 
-switch failure {
+switch success {
 case let .result(sunrise,sunset):
     print("Sunrise at \(sunrise) and sunset at \(sunset)")
 case let .failure(message):
@@ -288,4 +288,72 @@ case .unknown(let string):
     print(string)
 }
 
+protocol ExampleProtocol {
+    var simpleDescription: String {get}
+    mutating func adjust()
+}
+
+class SimpleClass: ExampleProtocol {
+    var simpleDescription: String = "A simple class"
+    
+    var anotherProperty: Int = 3748
+    
+    func adjust() {
+        simpleDescription += " now totally adjusted"
+    }
+}
+
+struct SimpleStruct: ExampleProtocol {
+    var simpleDescription: String = "A simple struct"
+    
+    mutating func adjust() {
+        simpleDescription += " now totally adjusted"
+    }
+}
+
+//let aSimpleClass = SimpleClass()
+//aSimpleClass.adjust()
+//let aDescription = aSimpleClass.simpleDescription
+//print(aDescription)
+//
+//var aSimpleStruct = SimpleStruct()
+//aSimpleStruct.adjust()
+//var structDescription = aSimpleStruct.simpleDescription
+//print(structDescription)
+//
+//let z: ExampleProtocol = SimpleClass()
+//z.simpleDescription
+//z.anotherProperty error due to boxed protocol type
+
+extension Int: ExampleProtocol {
+    var simpleDescription: String {
+        return "The number \(self)"
+    }
+    
+    mutating func adjust() {
+        
+    }
+    
+    
+}
+
+//let x = 10
+//x.simpleDescription
+//
+extension Double {
+    var absoluteValue: Self {
+        return self >= 0 ? self : self * -1.0
+    }
+}
+
+var y = -12.0
+y.absoluteValue
+
+protocol Vehicle { }
+
+struct Car: Vehicle { }
+struct Van: Vehicle { }
+struct Truck: Vehicle { }
+
+var vehicles: [Vehicle] = [Car(),Van(),Truck()]
 
