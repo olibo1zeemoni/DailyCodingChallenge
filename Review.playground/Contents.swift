@@ -357,3 +357,4 @@ struct Truck: Vehicle { }
 
 var vehicles: [Vehicle] = [Car(),Van(),Truck()]
 
+print("hello world")
