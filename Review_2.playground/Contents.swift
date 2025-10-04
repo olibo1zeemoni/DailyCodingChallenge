@@ -168,3 +168,35 @@ let anotherRange = 5...
 //    
 //}
 
+let threeDoubleQuotationMarks = """
+Escaping the first quotation mark \"""
+Escaping the first quotation mark \"\""
+Escaping the first quotation mark "\""
+Escaping the first quotation mark ""\"
+Escaping the first quotation mark \"\"\"
+"""
+//print(threeDoubleQuotationMarks)
+
+let lineFeed = #"Line 1\n Line 2"#
+//print(lineFeed)
+
+let badStart = """
+    one
+    two
+    """
+let end = """
+    \nthree
+    """
+//print(badStart + end)
+//print(#"Write an interpolated string in Swift using \(multiplier)."#)
+let unicodeString = "a"
+//print(unicodeString.utf8)
+
+var fruits = ["banana", "mango", "orange", "kiwi", "apple", "cherry", "peach", "plum", "grape"]
+let firstFruit = fruits.removeFirst()
+
+for fruit in fruits[2...] {
+    print(fruit)
+}
+
+
