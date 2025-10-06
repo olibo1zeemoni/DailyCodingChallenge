@@ -223,7 +223,37 @@ func downloadImagesConcurrently(urls: [URL]) async throws -> [UIImage] {
             }
         }
     } catch  {
-        print("")
+        ///Cancellation error thrown from inside the group will be handled here.
+        print("Task group was cancelled. Downloaded \(images.count) images before stopping.")
+    }
+    
+    return images
+}
+
+
+/// Downloads a collection of images concurrently with robust cancellation.
+func downloadAllImages(for urls: [URL]) async -> [UIImage] {
+    var images: [UIImage] = []
+    
+    do {
+        try await withThrowingTaskGroup(of: UIImage?.self) { group in
+            for url in urls {
+                guard group.addTaskUnlessCancelled(operation: {
+                    try Task.checkCancellation()
+                    let (data, _) = try await URLSession.shared.data(from: url)
+                    return UIImage(data: data)
+                }) else {
+                    break
+                }
+            }
+            for try await image in group {
+                if let image = image {
+                    images.append(image)
+                }
+            }
+        }
+    } catch {
+        print("Task group was cancelled. Downloaded \(images.count) images before stopping.")
     }
     
     return images
