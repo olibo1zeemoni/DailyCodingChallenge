@@ -145,6 +145,14 @@ func downloadPhoto(name: String) async throws -> Data {
     return Data("\(name).jpg".utf8)
 }
 
+func downloadPhoto(_ name: String) async throws -> Image {
+    try await Task.sleep(for: .seconds(1))
+    let data = Data("\(name).jpg".utf8)
+    
+    let image = Image(uiImage: UIImage(data: data)!)
+    return image
+}
+
 func downloadPhotos(inGallery: String) async throws -> [Data] {
     var results: [Data] = []
     try await withThrowingTaskGroup(of: Data.self) { group in
@@ -189,8 +197,34 @@ Task {
     let results = try await downloadPhotos(inGallery: "Vacation")
     for photo in results {
         print(String(data: photo, encoding: .utf8)!)
-//        print(photo)
     }
 }
 
 
+//MARK: Downloads a collection of images concurrently, with support for cancellation.
+func downloadImagesConcurrently(urls: [URL]) async throws -> [UIImage] {
+    var images: [UIImage] = []
+    do {
+        try await withThrowingTaskGroup(of: UIImage?.self) { group in
+            for url in urls {
+                group.addTask {
+                    try Task.checkCancellation()
+                    let (data,_) = try await URLSession.shared.data(from: url)
+                    try Task.checkCancellation()
+                    return UIImage(data: data)
+                }
+                
+                for try await image in group {
+                    if let image = image {
+                        images.append(image)
+                    }
+                }
+                
+            }
+        }
+    } catch  {
+        print("")
+    }
+    
+    return images
+}
