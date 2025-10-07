@@ -84,6 +84,7 @@ class Square: NameSpace {
     init(sideLength: Double, name: String) {
         self.sideLength = sideLength
         super.init(name: name)
+        numberOfSides = 4
     }
     override func description() {
 //        super.description()
